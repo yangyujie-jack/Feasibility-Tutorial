@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasibility Tutorial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        section {
+            background-color: #fff;
+            padding: 10px;
+        }
+        h2 {
+            color: #333;
+        }
+        p {
+            color: #666;
+            line-height: 1.6;
+            text-align: justify;
+        }
+        a {
+            color: inherit;
+        }
+        .author-info p {
+            margin-top: 30px;
+            color: #ccc;
+            text-align: center;
+        }
+        img {
+            display: block;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>The Feasibility of Constrained Reinforcement Learning Algorithms: A Tutorial Study</h1>
+        <div class="author-info">
+            <p>
+                Yujie Yang*<sup>1</sup>,
+                Zhilong Zheng*<sup>1</sup>,
+                Shengbo Eben Li<sup>&dagger;1</sup>,
+                Masayoshi Tomizuka<sup>2</sup>,
+                Changliu Liu<sup>3</sup>
+            </p>
+            <p>
+                *Equal contribution<br>
+                <sup>&dagger;</sup>Corresponding author. Email: <a href="mailto:lishbo@tsinghua.edu.cn">lishbo@tsinghua.edu.cn</a><br>
+                <sup>1</sup>School of Vehicle and Mobility and State Key Lab of Intelligent Green Vehicle and Mobility, Tsinghua University<br>
+                <sup>2</sup>Department of Mechanical Engineering, University of California, Berkeley<br>
+                <sup>3</sup>Robotics Institute, Carnegie Mellon University
+            </p>
+        </div>
+    </header>
+    <div class="container">
+        <section>
+            <img src="assets/images/intro.png" width="650px"/>
+        </section>
+        <section>
+            <h2>Abstract</h2>
+            <p>Satisfying safety constraints is a priority concern when solving optimal control problems (OCPs). Due to the existence of infeasibility phenomenon, where a constraint-satisfying solution cannot be found, it is necessary to identify a feasible region before implementing a policy. Existing feasibility theories built for model predictive control (MPC) only consider the feasibility of optimal policy. However, reinforcement learning (RL), as another important control method, solves the optimal policy in an iterative manner, which comes with a series of non-optimal intermediate policies. Feasibility analysis of these non-optimal policies is also necessary for iteratively improving constraint satisfaction; but that is not available under existing MPC feasibility theories. This paper proposes a feasibility theory that applies to both MPC and RL by filling in the missing part of feasibility analysis for an arbitrary policy. The basis of our theory is to decouple policy solving and implementation into two temporal domains: virtual-time domain and real-time domain. This allows us to separately define initial and endless, state and policy feasibility, and their corresponding feasible regions. Based on these definitions, we analyze the containment relationships between different feasible regions, which enables us to describe the feasible region of an arbitrary policy. We further provide virtual-time constraint design rules along with a practical design tool called feasibility function that helps to achieve the maximum feasible region. We review most of existing constraint formulations and point out that they are essentially applications of feasibility functions in different forms. We demonstrate our feasibility theory by visualizing different feasible regions under both MPC and RL policies in an emergency braking control task.</p>
+        </section>
+    </div>
+</body>
+</html>
