@@ -44,6 +44,16 @@
         img {
             display: block;
             margin: auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .img-wrapper {
+            display: flex;
+            width: 25%;
+        }
+        .img-wrapper img {
+            width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -68,12 +78,131 @@
         </div>
     </header>
     <div class="container">
-        <section>
-            <img src="assets/images/intro.png" width="650px"/>
-        </section>
+        <br>
+        <img src="assets/images/intro.png" width="650px"/>
+
         <section>
             <h2>Abstract</h2>
             <p>Satisfying safety constraints is a priority concern when solving optimal control problems (OCPs). Due to the existence of infeasibility phenomenon, where a constraint-satisfying solution cannot be found, it is necessary to identify a feasible region before implementing a policy. Existing feasibility theories built for model predictive control (MPC) only consider the feasibility of optimal policy. However, reinforcement learning (RL), as another important control method, solves the optimal policy in an iterative manner, which comes with a series of non-optimal intermediate policies. Feasibility analysis of these non-optimal policies is also necessary for iteratively improving constraint satisfaction; but that is not available under existing MPC feasibility theories. This paper proposes a feasibility theory that applies to both MPC and RL by filling in the missing part of feasibility analysis for an arbitrary policy. The basis of our theory is to decouple policy solving and implementation into two temporal domains: virtual-time domain and real-time domain. This allows us to separately define initial and endless, state and policy feasibility, and their corresponding feasible regions. Based on these definitions, we analyze the containment relationships between different feasible regions, which enables us to describe the feasible region of an arbitrary policy. We further provide virtual-time constraint design rules along with a practical design tool called feasibility function that helps to achieve the maximum feasible region. We review most of existing constraint formulations and point out that they are essentially applications of feasibility functions in different forms. We demonstrate our feasibility theory by visualizing different feasible regions under both MPC and RL policies in an emergency braking control task.</p>
+        </section>
+
+        <section>
+            <h2>Example of Emergency Braking Control</h2>
+            <br>
+            <img src="assets/images/emergency_braking.png" width="500px">
+
+            <h3>MPC with pointwise constraint</h3>
+            <div class="img-wrapper">
+                <img src="assets/images/trajectory_MPC_PW_(2,).png"/>
+                <img src="assets/images/trajectory_MPC_PW_(4,).png"/>
+                <img src="assets/images/trajectory_MPC_PW_(6,).png"/>
+                <img src="assets/images/trajectory_MPC_PW_(10,).png"/>
+            </div>
+            <div class="img-wrapper">
+                <img src="assets/images/feasibility_MPC_PW_(2,).png"/>
+                <img src="assets/images/feasibility_MPC_PW_(4,).png"/>
+                <img src="assets/images/feasibility_MPC_PW_(6,).png"/>
+                <img src="assets/images/feasibility_MPC_PW_(10,).png"/>
+            </div>
+
+            <h3>RL with pointwise constraint</h3>
+            <div class="img-wrapper">
+                <img src="assets/images/trajectory_RL_PW_10.png"/>
+                <img src="assets/images/trajectory_RL_PW_50.png"/>
+                <img src="assets/images/trajectory_RL_PW_100.png"/>
+                <img src="assets/images/trajectory_RL_PW_10000.png"/>
+            </div>
+            <div class="img-wrapper">
+                <img src="assets/images/feasibility_RL_PW_10.png"/>
+                <img src="assets/images/feasibility_RL_PW_50.png"/>
+                <img src="assets/images/feasibility_RL_PW_100.png"/>
+                <img src="assets/images/feasibility_RL_PW_10000.png"/>
+            </div>
+
+            <h3>MPC with control barrier function (CBF) constraint</h3>
+            <div class="img-wrapper">
+                <img src="assets/images/trajectory_MPC_CBF_(0.5,).png"/>
+                <img src="assets/images/trajectory_MPC_CBF_(0.2,).png"/>
+                <img src="assets/images/trajectory_MPC_CBF_(0.1,).png"/>
+                <img src="assets/images/trajectory_MPC_CBF_(0.05,).png"/>
+            </div>
+            <div class="img-wrapper">
+                <img src="assets/images/feasibility_MPC_CBF_(0.5,).png"/>
+                <img src="assets/images/feasibility_MPC_CBF_(0.2,).png"/>
+                <img src="assets/images/feasibility_MPC_CBF_(0.1,).png"/>
+                <img src="assets/images/feasibility_MPC_CBF_(0.05,).png"/>
+            </div>
+
+            <h3>RL with CBF constraint</h3>
+            <div class="img-wrapper">
+                <img src="assets/images/trajectory_RL_CBF_10.png"/>
+                <img src="assets/images/trajectory_RL_CBF_50.png"/>
+                <img src="assets/images/trajectory_RL_CBF_100.png"/>
+                <img src="assets/images/trajectory_RL_CBF_10000.png"/>
+            </div>
+            <div class="img-wrapper">
+                <img src="assets/images/feasibility_RL_CBF_10.png"/>
+                <img src="assets/images/feasibility_RL_CBF_50.png"/>
+                <img src="assets/images/feasibility_RL_CBF_100.png"/>
+                <img src="assets/images/feasibility_RL_CBF_10000.png"/>
+            </div>
+
+            <h3>MPC with safety index (SI) constraint</h3>
+            <div class="img-wrapper">
+                <img src="assets/images/trajectory_MPC_SI_(2, 5).png"/>
+                <img src="assets/images/trajectory_MPC_SI_(1, 1).png"/>
+                <img src="assets/images/trajectory_MPC_SI_(0.5, 0.5).png"/>
+                <img src="assets/images/trajectory_MPC_SI_(0.5, 0.23).png"/>
+            </div>
+            <div class="img-wrapper">
+                <img src="assets/images/feasibility_MPC_SI_(2, 5).png"/>
+                <img src="assets/images/feasibility_MPC_SI_(1, 1).png"/>
+                <img src="assets/images/feasibility_MPC_SI_(0.5, 0.5).png"/>
+                <img src="assets/images/feasibility_MPC_SI_(0.5, 0.23).png"/>
+            </div>
+
+            <h3>RL with SI constraint</h3>
+            <div class="img-wrapper">
+                <img src="assets/images/trajectory_RL_SI_10.png"/>
+                <img src="assets/images/trajectory_RL_SI_50.png"/>
+                <img src="assets/images/trajectory_RL_SI_100.png"/>
+                <img src="assets/images/trajectory_RL_SI_10000.png"/>
+            </div>
+            <div class="img-wrapper">
+                <img src="assets/images/feasibility_RL_SI_10.png"/>
+                <img src="assets/images/feasibility_RL_SI_50.png"/>
+                <img src="assets/images/feasibility_RL_SI_100.png"/>
+                <img src="assets/images/feasibility_RL_SI_10000.png"/>
+            </div>
+
+            <h3>MPC with Hamilton-Jacobi (HJ) reachability constraint</h3>
+            <div class="img-wrapper">
+                <img src="assets/images/trajectory_MPC_HJR_().png"/>
+                <img src="assets/images/feasibility_MPC_HJR_().png"/>
+            </div>
+
+            <h3>RL with HJ reachability constraint</h3>
+            <div class="img-wrapper">
+                <img src="assets/images/trajectory_RL_HJR_10.png"/>
+                <img src="assets/images/trajectory_RL_HJR_50.png"/>
+                <img src="assets/images/trajectory_RL_HJR_100.png"/>
+                <img src="assets/images/trajectory_RL_HJR_10000.png"/>
+            </div>
+            <div class="img-wrapper">
+                <img src="assets/images/feasibility_RL_HJR_10.png"/>
+                <img src="assets/images/feasibility_RL_HJR_50.png"/>
+                <img src="assets/images/feasibility_RL_HJR_100.png"/>
+                <img src="assets/images/feasibility_RL_HJR_10000.png"/>
+            </div>
+
+            <h3>SI synthesis via evolutionary optimization</h3>
+            <img src="assets/images/cma_es.png" width="700px">
+
+            <h3>SI synthesis via reinforcement learning</h3>
+            <img src="assets/images/joint_synthesis.png" width="600px">
+
+            <h3>SI synthesis via adversarial optimization</h3>
+            <img src="assets/images/adversarial.png" width="600px">
         </section>
     </div>
 </body>
