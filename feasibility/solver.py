@@ -4,7 +4,7 @@ import casadi as ca
 import numpy as np
 import torch
 from feasibility.constraint import Constraint
-from feasibility.model import MPCModel, RLModel, dynamics
+from feasibility.model import MPCModel, dynamics
 from feasibility.network import IHPolicy
 
 
@@ -28,7 +28,7 @@ class MPCSolver(Solver):
 
     name: str = 'MPC'
 
-    def __init__(self, model: MPCModel, constraint: Constraint, pre_horizon: int = 10):
+    def __init__(self, model: MPCModel, constraint: Constraint, pre_horizon: int = 20):
         # self.cfg = cfg
         self.model = model
         self.pre_horizon = pre_horizon
@@ -72,7 +72,7 @@ class MPCSolver(Solver):
                 self.ubg += [-EPSILON]
 
             # cost function
-            J += model.cost(u)
+            J += model.cost(x, u)
 
             # update state
             x = x_prime
@@ -121,7 +121,7 @@ class MPCSolver(Solver):
 class RLSolver(Solver):
     name: str = 'RL'
 
-    def __init__(self, policy: IHPolicy, forward_step: int = 10):
+    def __init__(self, policy: IHPolicy, forward_step: int = 1):
         self.policy = policy
         self.forward_step = forward_step
 

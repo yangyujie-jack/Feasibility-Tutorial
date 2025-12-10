@@ -12,8 +12,7 @@ from feasibility.utils import INIT_STATE_COLOR, get_state_trajectory, plot_traje
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--constraint', type=str, default='SI')
-    parser.add_argument('--log_dir', type=str, default='20240409_012948')
+    parser.add_argument('--log_dir', type=str, default='20251207_114428')
     args = parser.parse_args()
 
     model = RLModel()
@@ -28,7 +27,7 @@ if __name__ == '__main__':
     os.makedirs(DATA_PATH, exist_ok=True)
     os.makedirs(FIGURE_PATH, exist_ok=True)
 
-    log_dir = os.path.join(LOG_PATH, args.constraint, args.log_dir)
+    log_dir = os.path.join(LOG_PATH, args.log_dir)
     for f in os.listdir(log_dir):
         if not f.startswith('ckpts'):
             continue
@@ -41,10 +40,9 @@ if __name__ == '__main__':
 
         trajs = {}
         for state in INIT_STATE_COLOR.keys():
-            trajs[str(state)] = get_state_trajectory(state, solver)
+            trajs[str(state[:2])] = get_state_trajectory(state, solver)
 
-        filename = f'trajectory_RL_{args.constraint}_{ckpt_iter}'
-        np.savez(os.path.join(DATA_PATH, filename + '.npz'), **trajs)
+        np.savez(os.path.join(DATA_PATH, 'trajectory_RL.npz'), **trajs)
 
-        plot_trajectory(trajs, args.constraint + f' (iter {ckpt_iter})',
-                        os.path.join(FIGURE_PATH, filename + '.png'))
+        plot_trajectory(trajs, f'HJR (iter {ckpt_iter})',
+                        os.path.join(FIGURE_PATH, 'unicycle_trajectory_RL.pdf'))

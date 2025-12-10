@@ -3,21 +3,20 @@ from typing import Dict, Sequence, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 from feasibility.config import cfg_matplotlib
-from feasibility.constraint import Constraint, PWConstraint, CBFConstraint, SIConstraint, HJRConstraint
+from feasibility.constraint import Constraint, PWConstraint, CBFConstraint, HJRConstraint
 from feasibility.model import Model, dynamics, terminated, violated
 from feasibility.solver import Solver
 from matplotlib import rcParams
 
 
 INIT_STATE_COLOR = {
-    (8, 11): 'tab:blue',
-    (7,  8): 'tab:green',
-    (10, 5): 'tab:purple',
-    (6,  3): 'tab:orange',
-    (2,  1): 'tab:brown',
+    (-0.3, -1.2, 1., np.pi / 2): 'tab:orange',
+    (0.15, -1., 1., np.pi / 2): 'tab:brown',
+    (-0.15, -1.4, 1., np.pi / 2): 'tab:blue',
+    (0.01, -1.8, 1., np.pi / 2): 'tab:green',
 }
 
-STATE_GRID = [(0.5 * i, 0.5 * j) for i in range(21) for j in range(29)]
+STATE_GRID = [(x, y, 1., np.pi / 2) for x in np.linspace(-1.5, 1.5, 21) for y in np.linspace(-2., 1., 21)]
 
 
 def get_constraint(name: str, model: Model, **kwargs) -> Constraint:
@@ -25,14 +24,8 @@ def get_constraint(name: str, model: Model, **kwargs) -> Constraint:
         constraint = PWConstraint(**kwargs)
     elif name == 'CBF':
         constraint = CBFConstraint(**kwargs)
-    elif name == 'SI':
-        constraint = SIConstraint(
-            v_max=model.state_high[1],
-            a_min=model.action_low[0],
-            **kwargs,
-        )
     elif name == 'HJR':
-        constraint = HJRConstraint(a_min=model.action_low[0])
+        constraint = HJRConstraint(**kwargs)
     return constraint
 
 
@@ -70,22 +63,17 @@ def plot_trajectory(trajs: Dict[str, np.ndarray], title: str, save_path: str):
     plt.figure(figsize=cfg_matplotlib['fig_size'], dpi=cfg_matplotlib['dpi'])
     ax = plt.gca()
 
-    x_lim = (-1.0, 10.5)
-    y_lim = (-0.5, 14.5)
+    x_lim = (-1.5, 1.5)
+    y_lim = (-2., 1.)
     ax.set_xlim(x_lim)
     ax.set_ylim(y_lim)
 
-    # plot analytical boundary
-    d_red = np.linspace(0.0, x_lim[1], 100)
-    u_red = np.sqrt(2 * 10 * d_red)
-    ax.plot(d_red, u_red, color='#CD0F0F', linewidth=1, linestyle='--', zorder=1)
-    ax.fill_between(d_red, u_red, np.ones_like(d_red) * y_lim[0], color='#FEF6F6', zorder=0)
-    ax.plot([0.0, 0.0], y_lim, color='k', linewidth=1, linestyle='--', zorder=1)
-    ax.fill_betweenx(y_lim, x_lim[0], 0.0, color='#DCDCDC', zorder=0)
+    # plot constraint boundary
+    ax.add_patch(plt.Circle((0., 0.), 0.5, edgecolor='k', facecolor='none', linewidth=1))
 
     # plot trajectories
     for x, c in INIT_STATE_COLOR.items():
-        traj = trajs[str(x)]
+        traj = trajs[str(x[:2])]
         plt.plot(traj[:, 0], traj[:, 1], linewidth=1.5, linestyle='-', marker='o', ms=5,
                  markeredgewidth=1.5, markerfacecolor='white', zorder=2, color=c)
         plt.scatter(traj[0, 0], traj[0, 1], marker='o', color=c, zorder=2)
@@ -113,15 +101,13 @@ def plot_feasibility(
     plt.figure(figsize=cfg_matplotlib['fig_size'], dpi=cfg_matplotlib['dpi'])
     ax = plt.gca()
 
-    x_lim = (-0.4, 10.4)
-    y_lim = (-0.5, 14.5)
+    x_lim = (-1.5, 1.5)
+    y_lim = (-2., 1.)
     ax.set_xlim(x_lim)
     ax.set_ylim(y_lim)
 
     # plot analytical boundary
-    d_red = np.linspace(0.0, 10.0, 100)
-    u_red = np.sqrt(2 * 10 * d_red)
-    ax.plot(d_red, u_red, color='#CD0F0F', linewidth=1.5, linestyle='--', zorder=3)
+    ax.add_patch(plt.Circle((0., 0.), 0.5, edgecolor='k', facecolor='none', linewidth=1))
 
     EFR = []  # endlessly feasible region
     IFR = []  # initially feasible region
@@ -148,8 +134,8 @@ def plot_feasibility(
         INF = np.array(INF)
         plt.scatter(INF[:, 0], INF[:, 1], marker='D', s=20, color='#C8C8C8')
 
-    plt.xlabel('$d$ [m]', cfg_matplotlib['label_font'])
-    plt.ylabel('$v$ [m/s]', cfg_matplotlib['label_font'])
+    plt.xlabel('$x$ [m]', cfg_matplotlib['label_font'])
+    plt.ylabel('$y$ [m]', cfg_matplotlib['label_font'])
 
     plt.title(title, cfg_matplotlib['label_font'])
     plt.tick_params(labelsize=cfg_matplotlib['tick_size'])
