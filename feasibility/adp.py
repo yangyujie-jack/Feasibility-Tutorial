@@ -77,7 +77,7 @@ class ADP:
             self.value_optimizer.step()
 
             # update policy
-            ret = reward + ~done * self.gamma * self.value(state)
+            ret = reward + ~done * self.gamma * self.value(next_state)
 
             if self.constraint.name == 'PW':
                 x = next_state
